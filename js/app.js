@@ -20,8 +20,14 @@ var RiverMap = {
     convertUsgsData: function(data) {
         //console.log(data);
         for (var i = 0; i < data.length; i++) {
-            RiverMap.riverLocations.push({ lat: data[i].sourceInfo.geoLocation.geogLocation.latitude, lng: data[i].sourceInfo.geoLocation.geogLocation.longitude });
-            RiverMap.addRiverTag(RiverMap.riverLocations[i].lat, RiverMap.riverLocations[i].lng);
+        	
+            RiverMap.riverLocations.push({ 
+            	name: data[i].sourceInfo.siteName,
+             	lat: data[i].sourceInfo.geoLocation.geogLocation.latitude, 
+             	lng: data[i].sourceInfo.geoLocation.geogLocation.longitude,
+             	flow: data[i].values[0].value[0].value });
+
+            RiverMap.addRiverTag(RiverMap.riverLocations[i].lat, RiverMap.riverLocations[i].lng, RiverMap.riverLocations[i].name);
         }
 
     }
@@ -42,14 +48,14 @@ RiverMap.gMapInit = function() {
 };
 
 /*Add Maker to maps*/
-RiverMap.addRiverTag = function(lat, lng) {
+RiverMap.addRiverTag = function(lat, lng, name) {
 
     var latLng = new google.maps.LatLng(
         lat, lng);
 
     var marker = new google.maps.Marker({
         position: latLng,
-        title: 'Hopefully this works'
+        title: name
     });
 
     marker.setMap(map);
