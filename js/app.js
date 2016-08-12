@@ -2,6 +2,8 @@
 //http://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ca&parameterCd=00060,00065
 var gMap = {
 
+	markers: [],
+
     map: null,
 
     mapArea: $('#map-area')[0],
@@ -27,11 +29,19 @@ var gMap = {
 
         var marker = new google.maps.Marker({
             position: latLng,
-            title: name + 'flow: ' + flow,
+            title: name,
             icon: image
         });
 
         marker.setMap(this.map);
+        gMap.markers.push(marker);
+
+        marker.addListener('click', function(){
+        	var index = gMap.markers.indexOf(this);
+        	$('.lightbox').css('display','block');
+        	//gCharts.init(usgs.riverLocations[index]);
+        	//console.log('click works', index);
+        })
     },
 }
 
@@ -47,25 +57,40 @@ var usgs = {
         $.getJSON(url, function(data, status, xhr) {
 
             usgs.convertData(data.value.timeSeries);
-            console.log(data.value.timeSeries);
+            //console.log(data.value.timeSeries);
         });
 
     },
 
     convertData: function(data) {
-
+    	//console.log(data[0].values[0].value);
         for (var i = 0; i < data.length; i++) {
 
             usgs.riverLocations.push({
                 name: data[i].sourceInfo.siteName,
                 lat: data[i].sourceInfo.geoLocation.geogLocation.latitude,
                 lng: data[i].sourceInfo.geoLocation.geogLocation.longitude,
-                //flow: data[i].values[0].value[0].value
+                flow: scrubData(data[i].values[0].value)
             });
 
-            gMap.addRiverTag(usgs.riverLocations[i].lat, usgs.riverLocations[i].lng, usgs.riverLocations[i].name, usgs.riverLocations[i].flow);
-        }
 
+            function scrubData(val) {
+            	//console.log(val);
+                var fixedArray = [];
+                if (val) {
+                	for (var j = 0; j < val.length; j++) {
+                	var date = val[j].dateTime.slice(0,10);
+                	fixedArray.push([date, parseInt(val[j].value)]);
+                	}
+                    return fixedArray;
+                } else {
+                    return "no value"
+                }
+            }    
+            gMap.addRiverTag(usgs.riverLocations[i].lat, usgs.riverLocations[i].lng, usgs.riverLocations[i].name, usgs.riverLocations[i].flow);
+        	
+        }
+        	console.log(usgs.riverLocations);
     }
 }
 
@@ -78,23 +103,25 @@ $(window).on("throttledresize", function (event) {
 
 var gCharts = {
 
-    init: function() {
+    init: function(site) {
         google.charts.load('current', { 'packages': ['corechart','gauge'] });
-        google.charts.setOnLoadCallback(gCharts.drawAreaChart);
+        google.charts.setOnLoadCallback(gCharts.doDrawAreaChart(site));
         google.charts.setOnLoadCallback(gCharts.drawGauge);
     },
 
-    drawAreaChart: function(){
+    doDrawAreaChart: function(site){
+    	console.log('site', site);
+    return function drawAreaChart(){
+
     	var data = google.visualization.arrayToDataTable([
           ['Date', 'Flow'],
-          ['2013',  1000],
-          ['2014',  1170],
-          ['2015',  660],
-          ['2016',  1030]
+          [site.flow[0][0],  site.flow[0][1]],
+          [site.flow[1][0],  site.flow[1][1]],
+          [site.flow[2][0],  site.flow[2][1]]
         ]);
 
         var options = {
-          title: 'Past Three Days',
+          title: site.name,
           backgroundColor:'#EAEAEA', 
           hAxis: {title: 'Date',  titleTextStyle: {color: '#333'}},
           vAxis: {minValue: 0}
@@ -102,13 +129,13 @@ var gCharts = {
 
         var chart = new google.visualization.AreaChart($('.chart')[0]);
         chart.draw(data, options);
-      
+      }
     },
 
     drawGauge : function(){
     	var data = google.visualization.arrayToDataTable([
           ['Label', 'Value'],
-          ['River CFS', 80]
+          ['River CFS', 200]
         ]);
 
         var options = {
@@ -130,6 +157,6 @@ var gCharts = {
 $(function() {
 
     usgs.getData();
-    gCharts.init();
+    //gCharts.init();
 
 });
