@@ -278,6 +278,9 @@ li {
 	left: 0;
 	background: rgba(0,0,0,0.9);
 }
+.showLightbox{
+	display: block;
+}
 .lightbox > h1{
 	color: #fff0b7;
 	font-size: 3.5em;
@@ -313,6 +316,18 @@ li {
 }
 .details > h4{
 	text-align: left;
+}
+
+#close{
+	height: 4em;
+}
+
+#close h2{
+	position: absolute;
+	font-size: 2.5em;
+	right: 0%;
+	top: -3%;
+	cursor: pointer;
 }
 
 /*light*/
