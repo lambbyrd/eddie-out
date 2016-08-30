@@ -3,6 +3,7 @@
 var gCharts = {
 
     init: function() {
+        //console.log('gcharts is firing');
         google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
 
     },
@@ -10,6 +11,7 @@ var gCharts = {
     /*Draws the area chart*/
 
     doDrawAreaChart: function(site) {
+        console.log(site);
         google.charts.setOnLoadCallback(drawAreaChart(site));
 
         function drawAreaChart(site) {

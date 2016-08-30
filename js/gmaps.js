@@ -1,4 +1,15 @@
 /*Google Maps Javascript File*/
+var GoogleMapsLoader = require('google-maps');
+var gCharts = require('./gcharts');
+var usgs = require('./usgs');
+
+var theMap = null;
+
+GoogleMapsLoader.load(function(google){
+
+   theMap = new google.maps.Map(gMap.mapArea, gMap.mapOptions);
+
+});
 
 var index = null;
 /*Google Maps*/
@@ -11,6 +22,7 @@ var gMap = {
     mapArea: $('#map-area')[0],
 
     mapOptions: {
+        //key: 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ',
         zoom: 5,
         center: {
             lat: 39.09024,
@@ -35,7 +47,7 @@ var gMap = {
             icon: image
         });
 
-        marker.setMap(this.map);
+        marker.setMap(theMap);
         gMap.markers.push(marker);
 
         /*
