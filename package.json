@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "chokidar-cli": "^1.2.0",
+    "google-maps": "^3.2.1",
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
     "webpack": "^1.13.2"

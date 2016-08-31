@@ -3,11 +3,12 @@ var GoogleMapsLoader = require('google-maps');
 var gCharts = require('./gcharts');
 var usgs = require('./usgs');
 
-var theMap = null;
+/*Google Maps Loader*/
 
+GoogleMapsLoader.KEY = 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ';
 GoogleMapsLoader.load(function(google){
-
-   theMap = new google.maps.Map(gMap.mapArea, gMap.mapOptions);
+    
+    gMap.init();
 
 });
 
@@ -22,7 +23,6 @@ var gMap = {
     mapArea: $('#map-area')[0],
 
     mapOptions: {
-        //key: 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ',
         zoom: 5,
         center: {
             lat: 39.09024,
@@ -47,7 +47,7 @@ var gMap = {
             icon: image
         });
 
-        marker.setMap(theMap);
+        marker.setMap(this.map);
         gMap.markers.push(marker);
 
         /*

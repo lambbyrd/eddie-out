@@ -147,11 +147,12 @@
 	var gCharts = __webpack_require__(4);
 	var usgs = __webpack_require__(1);
 	
-	var theMap = null;
+	/*Google Maps Loader*/
 	
+	GoogleMapsLoader.KEY = 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ';
 	GoogleMapsLoader.load(function(google){
-	
-	   theMap = new google.maps.Map(gMap.mapArea, gMap.mapOptions);
+	    
+	    gMap.init();
 	
 	});
 	
@@ -166,7 +167,6 @@
 	    mapArea: $('#map-area')[0],
 	
 	    mapOptions: {
-	        //key: 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ',
 	        zoom: 5,
 	        center: {
 	            lat: 39.09024,
@@ -191,7 +191,7 @@
 	            icon: image
 	        });
 	
-	        marker.setMap(theMap);
+	        marker.setMap(this.map);
 	        gMap.markers.push(marker);
 	
 	        /*
@@ -258,7 +258,7 @@
 	
 		GoogleMapsLoader.URL = 'https://maps.googleapis.com/maps/api/js';
 	
-		GoogleMapsLoader.KEY = 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ';
+		GoogleMapsLoader.KEY = null;
 	
 		GoogleMapsLoader.LIBRARIES = [];
 	
@@ -456,7 +456,6 @@
 	    /*Draws the area chart*/
 	
 	    doDrawAreaChart: function(site) {
-	        console.log(site);
 	        google.charts.setOnLoadCallback(drawAreaChart(site));
 	
 	        function drawAreaChart(site) {
