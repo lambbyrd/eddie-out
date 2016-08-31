@@ -4,7 +4,6 @@ var usgs = require('./usgs');
 var gMap = require('./gmaps');
 var gCharts = require('./gcharts');
 
-console.log(gCharts);
 var index = null;
 $(function() {
 	/*when x is clicked on lightbox it closes and clears data*/
@@ -22,11 +21,18 @@ $(function() {
     promise.done(function() {
         gCharts.init();
 
-        for (var i = 0; i < usgs.filteredLocations.length; i++) {
+        usgs.filteredLocations.forEach(v=>{
+
+        	gMap.addRiverTag(v.lat,v.lng,v.name,v.flow);
+
+
+        });
+
+     /*   for (var i = 0; i < usgs.filteredLocations.length; i++) {
         	
             gMap.addRiverTag(usgs.filteredLocations[i].lat, usgs.filteredLocations[i].lng, usgs.filteredLocations[i].name, usgs.filteredLocations[i].flow);
 
-        }
+        }*/
 
     });
 });

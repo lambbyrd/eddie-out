@@ -6,7 +6,7 @@ var usgs = require('./usgs');
 /*Google Maps Loader*/
 
 GoogleMapsLoader.KEY = 'AIzaSyDeEhJNVidPVfBn1WRHALIczTr2fEQpytQ';
-GoogleMapsLoader.load(function(google){
+GoogleMapsLoader.load( google =>{
     
     gMap.init();
 
